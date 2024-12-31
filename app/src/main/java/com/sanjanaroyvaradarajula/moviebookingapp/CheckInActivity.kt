@@ -3,6 +3,7 @@ package com.sanjanaroyvaradarajula.moviebookingapp
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -204,15 +205,19 @@ fun LoginScreen() {
 
                                 email.isBlank() -> {
                                     errorMessage = "Please enter your email."
+                                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
                                 }
 
                                 password.isBlank() -> {
                                     errorMessage = "Please enter your password."
+                                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
                                 }
 
 
                                 else -> {
                                     errorMessage = ""
+                                    context.startActivity(Intent(context, MoviesActivity::class.java))
+                                    (context as Activity).finish()
 
 
                                 }
