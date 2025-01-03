@@ -6,12 +6,37 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/baseline_movie_24"
+        android:icon="@drawable/cinema"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/baseline_movie_24"
+        android:roundIcon="@drawable/cinema"
         android:supportsRtl="true"
         android:theme="@style/Theme.MovieBookingApp"
         tools:targetApi="31">
+        <activity
+            android:name=".moviesModule.CinemasLocationActivity"
+            android:exported="false"
+            android:theme="@style/Base.Theme.MovieBooking" />
+        <activity
+            android:name=".moviesModule.ShowDetailsActivity"
+            android:exported="true"
+            android:theme="@style/Base.Theme.MovieBooking">
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
+
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".moviesModule.BookTicketsActivity"
+            android:exported="false"
+            android:theme="@style/Base.Theme.MovieBooking" />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="true"
+            android:theme="@style/Base.Theme.MovieBooking">
+
+
+        </activity>
         <activity
             android:name=".MoviesActivity"
             android:exported="false" />
@@ -25,13 +50,19 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.MovieBookingApp">
+            android:theme="@style/Base.Theme.MovieBooking">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBbjh-tqqnt6bChHRv8ZI9wY0R9w5Z_MSI" />
     </application>
 
 </manifest>

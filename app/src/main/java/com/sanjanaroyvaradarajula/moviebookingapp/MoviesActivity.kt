@@ -36,9 +36,7 @@ import androidx.core.view.WindowInsetsCompat
 class MoviesActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent{
-            MoviesScreen()
-        }
+
     }
 }
 

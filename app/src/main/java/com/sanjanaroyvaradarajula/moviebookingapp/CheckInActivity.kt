@@ -1,6 +1,7 @@
 package com.sanjanaroyvaradarajula.moviebookingapp
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -41,12 +42,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.firebase.database.FirebaseDatabase
+import com.sanjanaroyvaradarajula.moviebookingapp.moviesModule.MovieFanData
 
 class CheckInActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,6 +87,7 @@ fun LoginScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(colorResource(id = R.color.first))
                 .padding(16.dp),
             horizontalAlignment = Alignment.Start
         ) {
@@ -91,7 +96,7 @@ fun LoginScreen() {
             Icon(
                 painter = painterResource(id = R.drawable.baseline_movie_24), // Replace with your icon
                 contentDescription = "Heart Icon",
-                tint = Color.Black,
+                tint = Color.White,
                 modifier = Modifier.size(64.dp)
             )
 
@@ -101,14 +106,14 @@ fun LoginScreen() {
             Text(
                 text = "Welcome Back!",
                 style = MaterialTheme.typography.headlineSmall.copy(
-                    color = Color.Black,
+                    color = Color.White,
                     fontWeight = FontWeight.Bold
                 )
             )
 
             Text(
                 text = "Login to your account...",
-                style = MaterialTheme.typography.bodySmall.copy(color = Color.Black)
+                style = MaterialTheme.typography.bodySmall.copy(color = Color.White)
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -118,7 +123,10 @@ fun LoginScreen() {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.Gray, shape = RoundedCornerShape(8.dp))
+                    .background(
+                        colorResource(id = R.color.second),
+                        shape = RoundedCornerShape(8.dp)
+                    )
                     .padding(16.dp)
             ) {
                 Column {
@@ -215,9 +223,12 @@ fun LoginScreen() {
 
 
                                 else -> {
-                                    errorMessage = ""
-                                    context.startActivity(Intent(context, MoviesActivity::class.java))
-                                    (context as Activity).finish()
+
+                                    val movieFan = MovieFan(
+                                        mail = email,
+                                        password = password
+                                    )
+                                    CheckInToBooking(movieFan, context)
 
 
                                 }
@@ -238,12 +249,12 @@ fun LoginScreen() {
             ) {
                 Text(
                     text = "Don't have an account? ",
-                    color = Color.Black,
+                    color = Color.White,
                     style = MaterialTheme.typography.bodySmall
                 )
                 Text(
                     text = "Register Now",
-                    color = Color.Black,
+                    color = Color.White,
                     style = MaterialTheme.typography.bodySmall.copy(
                         textDecoration = TextDecoration.Underline
                     ),
@@ -254,5 +265,46 @@ fun LoginScreen() {
                 )
             }
         }
+    }
+}
+
+data class MovieFan(
+    var fullname : String = "",
+    var mail : String = "",
+    var password : String = "",
+    var city : String = ""
+)
+
+fun CheckInToBooking(movieFan: MovieFan, context: Context) {
+
+
+        val firebaseDatabase = FirebaseDatabase.getInstance()
+        val databaseReference = firebaseDatabase.getReference("MovieFanDetails").child(movieFan.mail.replace(".", ","))
+
+        databaseReference.get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val fanData = task.result?.getValue(MovieFan::class.java)
+                if (fanData != null) {
+                    if (fanData.password == movieFan.password) {
+                        Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show()
+                        MovieFanData.persistLoginState(context, true)
+                        MovieFanData.persistUserMail(context, fanData.mail)
+                        MovieFanData.persistUserName(context, fanData.fullname)
+                        context.startActivity(Intent(context, HomeActivity::class.java))
+                        (context as Activity).finish()
+                    } else {
+                        Toast.makeText(context, "Seems Incorrect Credentials", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(context, "Your account not found", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(
+                    context,
+                    "Something went wrong",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
     }
 }

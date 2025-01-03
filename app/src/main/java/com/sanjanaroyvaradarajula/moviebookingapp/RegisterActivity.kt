@@ -1,12 +1,12 @@
 package com.sanjanaroyvaradarajula.moviebookingapp
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -39,14 +39,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.google.firebase.database.FirebaseDatabase
 
 class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,8 +59,7 @@ class RegisterActivity : ComponentActivity() {
 
 @Preview(showBackground = true)
 @Composable
-fun RegisterScreenP()
-{
+fun RegisterScreenP() {
     RegisterScreen()
 }
 
@@ -84,6 +83,7 @@ fun RegisterScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(colorResource(id = R.color.first))
                 .padding(16.dp),
             horizontalAlignment = Alignment.Start
         ) {
@@ -92,7 +92,7 @@ fun RegisterScreen() {
             Icon(
                 painter = painterResource(id = R.drawable.baseline_movie_24), // Replace with your icon
                 contentDescription = "Heart Icon",
-                tint = Color.Black,
+                tint = Color.White,
                 modifier = Modifier.size(64.dp)
             )
 
@@ -102,24 +102,25 @@ fun RegisterScreen() {
             Text(
                 text = "Welcome to Movie World!",
                 style = MaterialTheme.typography.headlineSmall.copy(
-                    color = Color.Black,
+                    color = Color.White,
                     fontWeight = FontWeight.Bold
                 )
             )
 
             Text(
                 text = "Register for an account...",
-                style = MaterialTheme.typography.bodySmall.copy(color = Color.Black)
+                style = MaterialTheme.typography.bodySmall.copy(color = Color.White)
             )
 
             Spacer(modifier = Modifier.height(32.dp))
 
-
-            // Green Box containing email, password, and controls
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.Gray, shape = RoundedCornerShape(8.dp))
+                    .background(
+                        colorResource(id = R.color.second),
+                        shape = RoundedCornerShape(8.dp)
+                    )
                     .padding(16.dp)
             ) {
                 Column {
@@ -239,19 +240,39 @@ fun RegisterScreen() {
                         onClick = {
                             when {
 
+                                fullName.isBlank() -> {
+                                    Toast.makeText(context, "Fullname missing", Toast.LENGTH_SHORT)
+                                        .show()
+
+                                }
 
                                 email.isBlank() -> {
-                                    errorMessage = "Please enter your email."
+                                    Toast.makeText(context, "Email missing", Toast.LENGTH_SHORT)
+                                        .show()
                                 }
 
                                 password.isBlank() -> {
-                                    errorMessage = "Please enter your password."
+                                    Toast.makeText(context, "Password missing", Toast.LENGTH_SHORT)
+                                        .show()
+                                }
+
+                                city.isBlank() -> {
+                                    Toast.makeText(context, "City missing", Toast.LENGTH_SHORT)
+                                        .show()
                                 }
 
 
                                 else -> {
                                     errorMessage = ""
 
+                                    val movieFan = MovieFan(
+                                        fullName,
+                                        email,
+                                        password = password,
+                                        city
+                                    )
+
+                                    FanRegistration(movieFan, context)
 
                                 }
                             }
@@ -271,12 +292,12 @@ fun RegisterScreen() {
             ) {
                 Text(
                     text = "Already have an account? ",
-                    color = Color.Black,
+                    color = Color.White,
                     style = MaterialTheme.typography.bodySmall
                 )
                 Text(
                     text = "Login Now",
-                    color = Color.Black,
+                    color = Color.White,
                     style = MaterialTheme.typography.bodySmall.copy(
                         textDecoration = TextDecoration.Underline
                     ),
@@ -290,3 +311,34 @@ fun RegisterScreen() {
     }
 }
 
+
+fun FanRegistration(movieFan: MovieFan, context: Context) {
+
+    val firebaseDatabase = FirebaseDatabase.getInstance()
+    val databaseReference = firebaseDatabase.getReference("MovieFanDetails")
+
+    databaseReference.child(movieFan.mail.replace(".", ","))
+        .setValue(movieFan)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(context, "You Registered Successfully", Toast.LENGTH_SHORT)
+                    .show()
+                context.startActivity(Intent(context, CheckInActivity::class.java))
+                (context as Activity).finish()
+
+            } else {
+                Toast.makeText(
+                    context,
+                    "Registration Failed",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+        .addOnFailureListener { _ ->
+            Toast.makeText(
+                context,
+                "Something went wrong",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+}
