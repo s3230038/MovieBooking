@@ -13,11 +13,11 @@
         android:theme="@style/Theme.MovieBookingApp"
         tools:targetApi="31">
         <activity
-            android:name=".moviesModule.CinemasLocationActivity"
+            android:name="movie.bookingappbysanjanaroyvaradarajula.s3230038.moviesModule.CinemasLocationActivity"
             android:exported="false"
             android:theme="@style/Base.Theme.MovieBooking" />
         <activity
-            android:name=".moviesModule.ShowDetailsActivity"
+            android:name="movie.bookingappbysanjanaroyvaradarajula.s3230038.moviesModule.ShowDetailsActivity"
             android:exported="true"
             android:theme="@style/Base.Theme.MovieBooking">
             <!--            <intent-filter>-->
@@ -27,27 +27,27 @@
             <!--            </intent-filter>-->
         </activity>
         <activity
-            android:name=".moviesModule.BookTicketsActivity"
+            android:name="movie.bookingappbysanjanaroyvaradarajula.s3230038.moviesModule.BookTicketsActivity"
             android:exported="false"
             android:theme="@style/Base.Theme.MovieBooking" />
         <activity
-            android:name=".HomeActivity"
+            android:name="movie.bookingappbysanjanaroyvaradarajula.s3230038.HomeActivity"
             android:exported="true"
             android:theme="@style/Base.Theme.MovieBooking">
 
 
         </activity>
         <activity
-            android:name=".MoviesActivity"
+            android:name="movie.bookingappbysanjanaroyvaradarajula.s3230038.MoviesActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisterActivity"
+            android:name="movie.bookingappbysanjanaroyvaradarajula.s3230038.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".CheckInActivity"
+            android:name="movie.bookingappbysanjanaroyvaradarajula.s3230038.CheckInActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name="movie.bookingappbysanjanaroyvaradarajula.s3230038.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Base.Theme.MovieBooking">

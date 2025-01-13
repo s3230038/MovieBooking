@@ -1,15 +1,16 @@
 {
   "project_info": {
     "project_number": "795701103043",
+    "firebase_url": "https://ebooking-f9206-default-rtdb.firebaseio.com",
     "project_id": "ebooking-f9206",
     "storage_bucket": "ebooking-f9206.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:795701103043:android:02555346285d4866d65576",
+        "mobilesdk_app_id": "1:795701103043:android:6b837472b05d7fb9d65576",
         "android_client_info": {
-          "package_name": "com.sanjanaroyvaradarajula.moviebookingapp"
+          "package_name": "movie.bookingappbysanjanaroyvaradarajula.s3230038"
         }
       },
       "oauth_client": [],

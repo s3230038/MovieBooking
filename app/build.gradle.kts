@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.sanjanaroyvaradarajula.moviebookingapp"
+    namespace = "movie.bookingappbysanjanaroyvaradarajula.s3230038"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.sanjanaroyvaradarajula.moviebookingapp"
+        applicationId = "movie.bookingappbysanjanaroyvaradarajula.s3230038"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
